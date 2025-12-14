@@ -1,0 +1,8 @@
+BoardSize=19
+Komi=7.5
+TimeLimit=30
+EnableSound=1
+EnableAnimation=1
+AIDifficulty=2
+BlackPlayer=ºÚ·½
+WhitePlayer=°×·½
