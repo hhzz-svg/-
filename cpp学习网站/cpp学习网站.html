@@ -1,0 +1,1939 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>C++ 学习资源与实战题库</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --panel: #ffffff;
+      --ink: #18202f;
+      --muted: #667085;
+      --line: #dde3ee;
+      --primary: #1867c0;
+      --primary-2: #0f8b8d;
+      --accent: #d94f30;
+      --soft-blue: #eaf3ff;
+      --soft-green: #e8f7f1;
+      --soft-orange: #fff0e8;
+      --shadow: 0 18px 45px rgba(24, 32, 47, 0.09);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(24, 103, 192, 0.12), transparent 32rem),
+        linear-gradient(180deg, #f8fbff 0%, var(--bg) 42%, #f3f5f9 100%);
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    code {
+      padding: 0.08rem 0.3rem;
+      border-radius: 5px;
+      background: #edf1f7;
+      color: #27364f;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .page-shell {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(221, 227, 238, 0.82);
+      background: rgba(247, 248, 251, 0.88);
+      backdrop-filter: blur(16px);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 68px;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius);
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 10px 24px rgba(24, 103, 192, 0.28);
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92rem;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a {
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: #344054;
+      font-size: 0.95rem;
+    }
+
+    .nav a:hover {
+      background: #eef4fb;
+      color: var(--primary);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(330px, 0.95fr);
+      align-items: center;
+      gap: 44px;
+      min-height: calc(100vh - 68px);
+      padding: 54px 0 34px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border: 1px solid #c8d9ec;
+      border-radius: 999px;
+      color: #1c5d99;
+      background: rgba(234, 243, 255, 0.8);
+      font-weight: 700;
+      font-size: 0.86rem;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      margin-top: 18px;
+      max-width: 760px;
+      font-size: clamp(2.55rem, 5.6vw, 5.6rem);
+      font-weight: 900;
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: 22px 0 0;
+      color: #4b5565;
+      font-size: 1.1rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      color: white;
+      background: var(--primary);
+      box-shadow: 0 12px 28px rgba(24, 103, 192, 0.24);
+    }
+
+    .btn-secondary {
+      border-color: #cdd7e4;
+      color: #253044;
+      background: white;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 520px;
+      overflow: hidden;
+      border: 1px solid rgba(205, 215, 228, 0.9);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.38)),
+        url("data:image/svg+xml,%3Csvg width='900' height='680' viewBox='0 0 900 680' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='900' height='680' fill='%23f8fbff'/%3E%3Cg fill='none' stroke='%231867c0' stroke-opacity='.13' stroke-width='2'%3E%3Cpath d='M105 560C230 420 275 520 402 385S608 210 784 290'/%3E%3Cpath d='M72 320c142-92 240-78 365-16 116 58 228 20 378-88'/%3E%3Cpath d='M180 115c95 88 163 117 265 90 132-36 220-7 313 110'/%3E%3C/g%3E%3Cg font-family='Consolas, monospace' font-weight='700'%3E%3Ctext x='80' y='135' fill='%231867c0' font-size='46'%3Etemplate%3C/text%3E%3Ctext x='570' y='160' fill='%230f8b8d' font-size='42'%3ERAII%3C/text%3E%3Ctext x='185' y='360' fill='%23d94f30' font-size='42'%3Evector%3C/text%3E%3Ctext x='545' y='460' fill='%2318202f' font-size='48'%3Econstexpr%3C/text%3E%3C/g%3E%3Cg fill='%23ffffff' stroke='%23c7d5e8' stroke-width='2'%3E%3Crect x='62' y='198' rx='8' width='312' height='90'/%3E%3Crect x='448' y='220' rx='8' width='315' height='96'/%3E%3Crect x='100' y='430' rx='8' width='338' height='98'/%3E%3Crect x='485' y='520' rx='8' width='318' height='82'/%3E%3C/g%3E%3Cg font-family='Consolas, monospace' font-size='24' fill='%2327364f'%3E%3Ctext x='88' y='240'%3Eauto solve%28%29 -%3E int%3C/text%3E%3Ctext x='88' y='268' fill='%23667085'%3E// STL + algorithm%3C/text%3E%3Ctext x='476' y='262'%3Eunique_ptr%26lt;T%26gt;%3C/text%3E%3Ctext x='476' y='292' fill='%23667085'%3Eowner semantics%3C/text%3E%3Ctext x='128' y='472'%3Eranges::sort%28a%29%3C/text%3E%3Ctext x='128' y='501' fill='%23667085'%3EO%28n log n%29%3C/text%3E%3Ctext x='512' y='568'%3Ethread + mutex%3C/text%3E%3C/g%3E%3C/svg%3E");
+      background-size: cover;
+      box-shadow: var(--shadow);
+    }
+
+    .visual-panel {
+      position: absolute;
+      left: 26px;
+      right: 26px;
+      bottom: 24px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 16px;
+      border: 1px solid rgba(221, 227, 238, 0.86);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(10px);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.9rem;
+      line-height: 1;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    section {
+      padding: 58px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 22px;
+      margin-bottom: 24px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.8rem, 3vw, 2.65rem);
+    }
+
+    .section-head p {
+      max-width: 650px;
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .resources {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .resource-card,
+    .content-card,
+    .practice-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: 0 12px 32px rgba(24, 32, 47, 0.06);
+    }
+
+    .resource-card {
+      display: flex;
+      min-height: 208px;
+      flex-direction: column;
+      padding: 18px;
+    }
+
+    .resource-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: #344054;
+      background: #eef2f7;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .tag.blue {
+      color: #145399;
+      background: var(--soft-blue);
+    }
+
+    .tag.green {
+      color: #08746f;
+      background: var(--soft-green);
+    }
+
+    .tag.orange {
+      color: #a33d21;
+      background: var(--soft-orange);
+    }
+
+    .resource-card h3 {
+      margin-top: 16px;
+      font-size: 1.08rem;
+    }
+
+    .resource-card p {
+      flex: 1;
+      margin: 10px 0 16px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .resource-card a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: 18px;
+    }
+
+    .track {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .track h3 {
+      font-size: 1.35rem;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .step-num {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      color: white;
+      background: var(--primary);
+      font-weight: 900;
+      font-size: 0.9rem;
+    }
+
+    .step strong {
+      display: block;
+    }
+
+    .step span {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .content-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .lecture-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lecture-card {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 16px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: 0 12px 32px rgba(24, 32, 47, 0.06);
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .lecture-card:hover {
+      border-color: #b7cbe6;
+      box-shadow: 0 18px 42px rgba(24, 103, 192, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .lecture-index {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-weight: 900;
+    }
+
+    .lecture-card h3 {
+      font-size: 1.14rem;
+    }
+
+    .lecture-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 8px 0 10px;
+    }
+
+    .lecture-card p {
+      margin: 0;
+      color: #4b5565;
+    }
+
+    .lecture-card ul {
+      margin: 10px 0 0;
+      padding-left: 1.1rem;
+      color: #4b5565;
+    }
+
+    .content-card {
+      padding: 20px;
+    }
+
+    .content-card h3 {
+      font-size: 1.15rem;
+    }
+
+    .content-card ul {
+      padding-left: 1.1rem;
+      margin: 12px 0 0;
+      color: #4b5565;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(240px, 1fr) auto auto;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .toolbar input,
+    .toolbar select {
+      width: 100%;
+      min-height: 44px;
+      padding: 0 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      color: #263244;
+      background: #fff;
+      font: inherit;
+    }
+
+    .toolbar input:focus,
+    .toolbar select:focus {
+      outline: 2px solid rgba(24, 103, 192, 0.18);
+      border-color: var(--primary);
+    }
+
+    .practice-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .practice-card {
+      overflow: hidden;
+    }
+
+    .practice-link {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      width: 100%;
+      padding: 16px;
+      color: inherit;
+      background: #fff;
+      text-align: left;
+      font: inherit;
+    }
+
+    .practice-link:hover {
+      background: #f7faff;
+    }
+
+    .qid {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      color: white;
+      background: #253044;
+      font-weight: 900;
+      font-size: 0.85rem;
+      font-family: "Cascadia Code", Consolas, monospace;
+    }
+
+    .practice-title {
+      display: grid;
+      gap: 7px;
+    }
+
+    .practice-title strong {
+      line-height: 1.35;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chevron {
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .empty {
+      display: none;
+      padding: 28px;
+      border: 1px dashed #cbd5e1;
+      border-radius: var(--radius);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.72);
+      text-align: center;
+    }
+
+    .question-detail-page {
+      padding-top: 28px;
+      background: linear-gradient(180deg, rgba(234, 243, 255, 0.65), rgba(247, 248, 251, 0));
+    }
+
+    .back-link {
+      display: inline-flex;
+      margin-bottom: 18px;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .question-detail-head {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .question-detail-head h2 {
+      margin-top: 12px;
+    }
+
+    .question-detail-head p {
+      margin: 12px 0 0;
+      color: #4b5565;
+    }
+
+    .detail-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .detail-panel {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 12px 32px rgba(24, 32, 47, 0.06);
+    }
+
+    .detail-panel h3 {
+      margin-bottom: 12px;
+      font-size: 1.12rem;
+    }
+
+    .solution-code {
+      overflow-x: auto;
+      margin: 0;
+      padding: 16px;
+      border-radius: 7px;
+      background: #141b2b;
+      color: #ecf2ff;
+      line-height: 1.58;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.9rem;
+    }
+
+    .line-panel {
+      grid-column: 1 / -1;
+    }
+
+    .line-note {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 12px;
+      padding: 12px 0;
+      border-top: 1px solid #eef2f7;
+    }
+
+    .line-note:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .line-no {
+      color: var(--primary);
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-weight: 900;
+    }
+
+    .line-note code {
+      display: block;
+      width: fit-content;
+      max-width: 100%;
+      overflow-x: auto;
+      margin-bottom: 6px;
+      white-space: pre;
+    }
+
+    .line-note p {
+      margin: 0;
+      color: #4b5565;
+    }
+
+    .footer {
+      padding: 36px 0 46px;
+      color: #667085;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .roadmap {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-visual {
+        min-height: 410px;
+      }
+
+      .resources,
+      .lecture-grid,
+      .content-grid,
+      .practice-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      .page-shell {
+        width: min(100% - 24px, 1180px);
+      }
+
+      .topbar-inner,
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        padding-top: 34px;
+      }
+
+      .hero-visual {
+        min-height: 360px;
+      }
+
+      .visual-panel,
+      .resources,
+      .lecture-grid,
+      .content-grid,
+      .practice-list,
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .lecture-card {
+        grid-template-columns: 1fr;
+      }
+
+      .visual-panel {
+        left: 14px;
+        right: 14px;
+      }
+
+      .practice-link {
+        grid-template-columns: 42px 1fr;
+      }
+
+      .chevron {
+        display: none;
+      }
+
+      .detail-layout,
+      .line-note {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="page-shell topbar-inner">
+      <a class="brand" href="#top" aria-label="返回顶部">
+        <span class="brand-mark">C++</span>
+        <span>现代 C++ 学习站</span>
+      </a>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#resources">资源</a>
+        <a href="#roadmap">路线</a>
+        <a href="#lectures">讲稿</a>
+        <a href="#content">内容</a>
+        <a href="#practice">50 题</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="page-shell hero">
+      <div>
+        <span class="eyebrow">从语法、STL 到工程实战的一页式学习入口</span>
+        <h1>C++ 学习资源、知识路线与 50 道实战题解析</h1>
+        <p>面向初学者到进阶开发者，按“看讲稿、搭体系、做题复盘”的节奏组织。页面已加入《高级程序设计讲稿（26春季）》的分章节精简版，并保留资源跳转、题目检索和独立解析页。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#practice">开始刷题</a>
+          <a class="btn btn-secondary" href="#resources">查看资源</a>
+        </div>
+      </div>
+      <aside class="hero-visual" aria-label="C++ 学习主题视觉图">
+        <div class="visual-panel">
+          <div class="metric">
+            <strong>26</strong>
+            <span>份讲稿精简</span>
+          </div>
+          <div class="metric">
+            <strong>8</strong>
+            <span>学习模块</span>
+          </div>
+          <div class="metric">
+            <strong>50</strong>
+            <span>实战题解析</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <section id="resources">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <h2>精选学习资源</h2>
+            <p>覆盖标准参考、教程、在线编译、工程构建、代码规范和题库。所有卡片都可跳转到相关网页。</p>
+          </div>
+        </div>
+        <div class="grid resources" id="resourceGrid"></div>
+      </div>
+    </section>
+
+    <section id="roadmap">
+      <div class="page-shell roadmap">
+        <div class="track">
+          <span class="tag blue">学习路线</span>
+          <h3>建议按四轮推进</h3>
+          <div class="timeline">
+            <div class="step">
+              <span class="step-num">1</span>
+              <div><strong>语法与编译模型</strong><span>理解源文件、头文件、链接、命名空间、类型和控制流。</span></div>
+            </div>
+            <div class="step">
+              <span class="step-num">2</span>
+              <div><strong>对象模型与资源管理</strong><span>掌握构造析构、拷贝移动、RAII、智能指针和异常安全。</span></div>
+            </div>
+            <div class="step">
+              <span class="step-num">3</span>
+              <div><strong>STL 与算法思维</strong><span>熟悉容器、迭代器、算法、复杂度、排序搜索和常见数据结构。</span></div>
+            </div>
+            <div class="step">
+              <span class="step-num">4</span>
+              <div><strong>现代工程实践</strong><span>补齐 CMake、测试、调试、性能分析、并发和代码规范。</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="track">
+          <span class="tag green">复盘方法</span>
+          <h3>每个知识点都用“小项目 + 复盘单”验证</h3>
+          <p>不要只背语法。每学完一个模块，用一道题或一个小工具落地：先写出可运行版本，再分析复杂度、边界条件、资源生命周期和可维护性。遇到 STL、模板、并发等主题时，先解释“为什么这样设计”，再补语法细节。</p>
+          <p>推荐每天固定节奏：30 分钟阅读资料、45 分钟写题、15 分钟复盘错因。复盘时记录输入边界、错误类型、替代方案和可复用代码片段。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="lectures">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <h2>讲稿分章节精简</h2>
+            <p>依据《高级程序设计讲稿（26春季）》26 份 PPT/PPTX 提取并压缩，保留每章主线、关键概念和复习重点。</p>
+          </div>
+        </div>
+        <div class="grid lecture-grid" id="lectureGrid"></div>
+      </div>
+    </section>
+
+    <section id="content">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <h2>C++ 核心学习内容</h2>
+            <p>按现代 C++ 常用能力组织，适合做课程目录、复习清单或项目学习路线。</p>
+          </div>
+        </div>
+        <div class="grid content-grid">
+          <article class="content-card">
+            <span class="tag blue">基础</span>
+            <h3>语法、类型与控制流</h3>
+            <ul>
+              <li>变量、常量、表达式、隐式转换与作用域</li>
+              <li><code>if</code>、<code>switch</code>、循环、函数与重载</li>
+              <li>引用、指针、数组、字符串和基本 I/O</li>
+            </ul>
+          </article>
+          <article class="content-card">
+            <span class="tag green">对象</span>
+            <h3>类、封装与对象生命周期</h3>
+            <ul>
+              <li>构造函数、析构函数、访问控制和不变量</li>
+              <li>拷贝构造、赋值、移动语义与五法则</li>
+              <li>继承、多态、虚函数和接口设计</li>
+            </ul>
+          </article>
+          <article class="content-card">
+            <span class="tag orange">资源</span>
+            <h3>内存、RAII 与异常安全</h3>
+            <ul>
+              <li><code>new/delete</code> 与栈对象生命周期差异</li>
+              <li><code>unique_ptr</code>、<code>shared_ptr</code>、<code>weak_ptr</code></li>
+              <li>异常传播、强保证、无泄漏资源释放</li>
+            </ul>
+          </article>
+          <article class="content-card">
+            <span class="tag blue">STL</span>
+            <h3>容器、迭代器与算法</h3>
+            <ul>
+              <li><code>vector</code>、<code>list</code>、<code>map</code>、<code>unordered_map</code></li>
+              <li>迭代器失效、复杂度、排序、查找和变换</li>
+              <li>优先使用标准库算法表达意图</li>
+            </ul>
+          </article>
+          <article class="content-card">
+            <span class="tag green">现代</span>
+            <h3>C++11 到 C++23 常用特性</h3>
+            <ul>
+              <li><code>auto</code>、范围 for、lambda、结构化绑定</li>
+              <li><code>constexpr</code>、模板推导、概念和 ranges</li>
+              <li>模块、协程、格式化和标准演进方向</li>
+            </ul>
+          </article>
+          <article class="content-card">
+            <span class="tag orange">工程</span>
+            <h3>构建、调试、测试与性能</h3>
+            <ul>
+              <li>CMake、vcpkg、编译选项和跨平台配置</li>
+              <li>断点调试、Sanitizer、单元测试和日志</li>
+              <li>复杂度分析、缓存友好、并发安全和性能剖析</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="practice">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <h2>50 道实战题与解析</h2>
+            <p>题目从基础语法覆盖到面向对象。可按关键词、模块和难度筛选，点击题目进入独立解析页，查看代码和逐行说明。</p>
+          </div>
+        </div>
+        <div class="toolbar">
+          <input id="searchInput" type="search" placeholder="搜索题目、模块或解析关键词">
+          <select id="moduleFilter" aria-label="按模块筛选">
+            <option value="all">全部模块</option>
+          </select>
+          <select id="levelFilter" aria-label="按难度筛选">
+            <option value="all">全部难度</option>
+            <option value="入门">入门</option>
+            <option value="基础">基础</option>
+            <option value="进阶">进阶</option>
+            <option value="综合">综合</option>
+          </select>
+        </div>
+        <div class="practice-list" id="practiceList"></div>
+        <div class="empty" id="emptyState">没有找到匹配题目，请换个关键词或筛选条件。</div>
+      </div>
+    </section>
+
+    <section id="questionDetail" class="question-detail-page" hidden>
+      <div class="page-shell">
+        <a class="back-link" href="#practice">返回题目列表</a>
+        <div class="question-detail-head">
+          <div>
+            <span class="tag blue" id="detailModule">模块</span>
+            <span class="tag green" id="detailLevel">难度</span>
+          </div>
+          <h2 id="detailTitle">题目解析</h2>
+          <p id="detailTask"></p>
+        </div>
+        <div class="detail-layout">
+          <article class="detail-panel">
+            <h3>解题思路</h3>
+            <p id="detailAnalysis"></p>
+          </article>
+          <article class="detail-panel">
+            <h3>参考代码</h3>
+            <pre class="solution-code"><code id="detailCode"></code></pre>
+          </article>
+          <article class="detail-panel line-panel">
+            <h3>逐行解析</h3>
+            <div id="detailLines"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="page-shell">建议把本页作为 C++ 学习入口：先跟讲稿路线学，再用 50 题查漏补缺，最后把高频题改造成自己的代码模板库。</div>
+  </footer>
+
+  <script>
+    const resources = [
+      { title: "cppreference C++ 参考", type: "标准参考", tone: "blue", url: "https://www.cppreference.com/w/cpp.html", desc: "查询语言特性、标准库、容器、算法、并发和各版本支持情况。" },
+      { title: "ISO C++ 官方站", type: "标准动态", tone: "green", url: "https://isocpp.org/", desc: "了解 C++ 标准委员会、新闻、FAQ、会议资料和官方生态入口。" },
+      { title: "C++ Core Guidelines", type: "编码规范", tone: "orange", url: "https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines.html", desc: "现代 C++ 设计和编码准则，适合学习接口、资源管理和可维护性。" },
+      { title: "LearnCpp", type: "系统教程", tone: "blue", url: "https://www.learncpp.com/", desc: "从零开始的现代 C++ 教程，解释细致，适合搭建完整知识体系。" },
+      { title: "learn-cpp.org", type: "交互练习", tone: "green", url: "https://www.learn-cpp.org/", desc: "浏览器内完成短练习，适合快速验证语法和基础概念。" },
+      { title: "Microsoft C++ 文档", type: "工具链", tone: "orange", url: "https://learn.microsoft.com/en-us/cpp/", desc: "Visual Studio、MSVC、标准库、调试、构建和 Windows C++ 开发文档。" },
+      { title: "Compiler Explorer", type: "在线编译", tone: "blue", url: "https://godbolt.org/", desc: "在线查看不同编译器输出、汇编结果和优化差异，适合理解底层行为。" },
+      { title: "CMake Tutorial", type: "工程构建", tone: "green", url: "https://cmake.org/cmake/help/latest/guide/tutorial/index.html", desc: "官方 CMake 教程，用项目方式学习可移植构建系统。" },
+      { title: "Awesome C++", type: "生态清单", tone: "orange", url: "https://github.com/fffaraz/awesome-cpp", desc: "大量 C++ 框架、库、工具和学习资源集合，适合扩展项目视野。" },
+      { title: "Google C++ Style Guide", type: "代码风格", tone: "blue", url: "https://google.github.io/styleguide/cppguide.html", desc: "大型工程常用风格参考，可学习命名、头文件、类设计和工程约束。" },
+      { title: "LeetCode C++", type: "算法题库", tone: "green", url: "https://leetcode.com/problemset/", desc: "刷数组、字符串、树、图、动态规划等算法题，练习 C++ 解题表达。" },
+      { title: "HackerRank C++", type: "入门题库", tone: "orange", url: "https://www.hackerrank.com/domains/cpp", desc: "按语法和 STL 主题练习，适合新手巩固基础。" }
+    ];
+
+    const lectureChapters = [
+      {
+        no: "0",
+        title: "课程概述",
+        source: "0 课程概述.ppt",
+        summary: "课程目标是掌握更高层次的程序抽象与复用技术，提升面向较大规模程序的设计、实现和维护能力。",
+        points: ["主线包括面向对象、异常处理、泛型、STL、函数式和事件驱动程序设计。", "C++ 语言机制服务于程序设计思想，不要求孤立地堆语法。", "预备知识包括过程抽象、指针、动态变量、递归、多模块结构和 C 语言基础。"]
+      },
+      {
+        no: "1-1",
+        title: "C++ 语言概述",
+        source: "1-1 C++语言概述.pptx",
+        summary: "C++ 从 C with Classes 发展而来，是强调灵活性与执行效率的多范式编译型语言。",
+        points: ["理解 C++98 到 C++26 的标准演进，C++11 是现代 C++ 的重要基础。", "重点掌握相对 C 的扩充：const、inline、默认参数、namespace、new/delete、引用、重载、异常和类型安全 I/O。", "用内联函数替代易出错的宏，用 namespace 和 std 组织全局实体。"]
+      },
+      {
+        no: "1-2",
+        title: "数据抽象与封装概述",
+        source: "1-2 数据抽象与封装概述.ppt",
+        summary: "抽象关注外部可观察行为，封装隐藏内部实现细节，二者用于控制复杂度并保护信息。",
+        points: ["过程抽象用函数命名一段行为，调用者只依赖接口。", "数据抽象把数据及其操作作为整体建模，是类与对象设计的基础。", "大型程序应通过清晰接口降低理解、修改和协作成本。"]
+      },
+      {
+        no: "1-3",
+        title: "面向对象程序设计概述",
+        source: "1-3 面向对象程序设计概述.ppt",
+        summary: "面向对象程序由对象组成，对象把数据和操作封装在一起，并通过消息调用协作完成计算。",
+        points: ["类描述对象包含哪些数据和操作，对象是运行时的基本计算单位。", "继承让类之间表达一般与特殊关系，没有继承时更接近基于对象程序设计。", "程序执行可理解为对象之间不断发送消息并触发进一步计算。"]
+      },
+      {
+        no: "2-1",
+        title: "对象与类",
+        source: "2-1 对象与类.ppt",
+        summary: "类是用户自定义类型，包含数据成员和成员函数；对象依据类创建并在运行时承载状态。",
+        points: ["数据成员描述对象属性，成员函数描述可对对象实施的操作。", "public、private、protected 控制外部访问，public 成员构成类接口。", "this 指针把成员函数调用绑定到具体对象，成员函数本身通常不为每个对象复制。"]
+      },
+      {
+        no: "2-2",
+        title: "对象的初始化与消亡处理",
+        source: "2-2 对象的初始化与消亡处理.ppt",
+        summary: "构造函数负责对象创建时的初始化，析构函数负责对象消亡时的清理，二者是资源安全的基础。",
+        points: ["构造函数与类同名、无返回值，创建对象时自动调用。", "析构函数用于释放对象持有的资源，尤其是动态内存和外部句柄。", "成员对象、继承对象与动态对象都有明确的构造和析构次序。"]
+      },
+      {
+        no: "2-3",
+        title: "对象资源的复制与转移初始化",
+        source: "2-3 对象资源的复制与转移初始化.ppt",
+        summary: "当对象拥有资源时，必须理解拷贝构造、返回值优化和移动构造，避免浅拷贝、重复释放和低效复制。",
+        points: ["拷贝构造在用同类对象初始化、值传参和值返回时可能发生。", "拥有动态资源的类要实现深拷贝或禁用拷贝。", "移动构造把临时对象资源转移给新对象，减少不必要复制。"]
+      },
+      {
+        no: "2-4",
+        title: "类作为模块",
+        source: "2-4 类作为模块.ppt",
+        summary: "模块把接口与实现分离，是组织大型程序的重要手段；类可以自然形成围绕数据抽象的模块边界。",
+        points: ["接口描述可被外界使用的实体，实现隐藏具体代码和数据细节。", "模块划分应追求高内聚、低耦合。", "类模块比单纯按函数划分更容易维护数据与操作之间的一致性。"]
+      },
+      {
+        no: "2-5",
+        title: "同类对象的资源共享",
+        source: "2-5 同类对象的资源共享.ppt",
+        summary: "静态成员用于表达属于整个类、由同类对象共享的数据或操作，避免把共享状态散落到全局变量中。",
+        points: ["普通数据成员每个对象一份，静态数据成员全类共享一份。", "静态数据成员需要在类外定义和初始化。", "静态成员函数不依赖具体对象，不能直接访问非静态成员。"]
+      },
+      {
+        no: "2-6",
+        title: "常量对象",
+        source: "2-6 常量对象.ppt",
+        summary: "常成员函数用于声明不会改变对象可观察状态的操作，使常量对象和 const 引用能够安全访问对象状态。",
+        points: ["获取状态的成员函数应标记为 const，改变状态的成员函数不应标记。", "常量对象只能调用常成员函数。", "const 约束的是成员变量本身，指针指向内容的修改仍需额外设计约束。"]
+      },
+      {
+        no: "2-7",
+        title: "友元",
+        source: "2-7 友元.ppt",
+        summary: "友元允许特定外部函数或类访问非 public 成员，是数据保护与访问效率之间的折中。",
+        points: ["友元可用于全局函数、另一个类或另一个类的成员函数。", "友元不是类成员，友元关系不对称也不传递。", "应谨慎使用友元，优先保持封装边界清晰。"]
+      },
+      {
+        no: "3-1",
+        title: "类的复用：继承基础",
+        source: "3-1 类的复用-继承（基本内容）.ppt",
+        summary: "继承用于表达类之间的一般与特殊关系，并让派生类复用基类已有成员和接口。",
+        points: ["public 继承常用于表达 is-a-kind-of 的子类型关系。", "派生类对象包含基类子对象，构造和析构有固定次序。", "访问控制和继承方式共同决定成员在派生类与外部的可见性。"]
+      },
+      {
+        no: "3-2",
+        title: "虚函数与消息的动态绑定",
+        source: "3-2 虚函数与消息的动态绑定.ppt",
+        summary: "虚函数让通过基类指针或引用发出的消息在运行时绑定到实际对象类型，实现多态。",
+        points: ["静态绑定在编译期确定调用目标，动态绑定在运行期根据实际对象确定。", "多态接口通常使用基类指针或引用调用 virtual 函数。", "多态基类应提供虚析构函数，防止通过基类指针删除派生对象时资源泄漏。"]
+      },
+      {
+        no: "3-3",
+        title: "纯虚函数与抽象类",
+        source: "3-3 纯虚函数与抽象类.ppt",
+        summary: "抽象类通过纯虚函数描述公共接口，不能直接创建对象，主要用于统一不同实现。",
+        points: ["纯虚函数要求派生类给出具体实现。", "抽象类可包含纯虚函数、普通虚函数和非虚函数。", "用抽象基类能把算法依赖从具体类转移到稳定接口。"]
+      },
+      {
+        no: "3-4",
+        title: "多继承",
+        source: "3-4 多继承.ppt",
+        summary: "多继承让一个派生类同时继承多个直接基类，用来表达对象同时具有多种基类特征的情况。",
+        points: ["多继承能避免人为制造概念层次，但也增加命名冲突和构造次序复杂度。", "基类声明顺序影响基类子对象存储安排和构造、析构调用顺序。", "遇到菱形继承时需要理解虚基类的作用。"]
+      },
+      {
+        no: "3-5",
+        title: "聚合与组合",
+        source: "3-5 聚合与组合.ppt",
+        summary: "继承不是复用的唯一方式；聚合和组合表达整体与部分关系，通常能降低耦合并保护封装。",
+        points: ["继承表达 is-a-kind-of，聚合/组合表达 is-a-part-of。", "聚合中部分对象可独立存在，组合中部分对象随整体创建和消亡。", "纯粹为了复用代码时优先考虑组合，而不是强行继承。"]
+      },
+      {
+        no: "4-1",
+        title: "操作符重载基础",
+        source: "4-1 操作符重载（基础）.ppt",
+        summary: "操作符重载让自定义类型像内置类型一样使用运算符，常用于复数、分数、矩阵、集合等抽象数据类型。",
+        points: ["重载应符合运算符原有语义，避免让调用者误解。", "可重载下标、递增递减、类型转换等操作符。", "成员函数和友元函数两种形式各有适用场景。"]
+      },
+      {
+        no: "4-2",
+        title: "对象的赋值与转移赋值",
+        source: "4-2 对象的赋值与转移赋值.ppt",
+        summary: "默认赋值逐成员复制，拥有动态资源的类通常需要自定义赋值操作符和移动赋值。",
+        points: ["浅赋值可能造成内存泄漏、对象互相干扰和重复释放。", "赋值操作要处理自赋值，并保证旧资源正确释放。", "移动赋值用于接管右值资源，让对象更新更高效。"]
+      },
+      {
+        no: "4-3",
+        title: "函数对象",
+        source: "4-3 函数对象.ppt",
+        summary: "重载函数调用操作符后，对象可以像函数一样调用，并且能够携带状态。",
+        points: ["函数对象适合表达带状态的计算行为，例如幂函数或随机数生成器。", "lambda 表达式可理解为编译器生成的函数对象。", "函数对象常与 STL 算法、比较器和回调机制结合使用。"]
+      },
+      {
+        no: "4-4",
+        title: "智能指针与动态对象空间的自动回收",
+        source: "4-4 智能指针与动态对象空间的自动回收.ppt",
+        summary: "智能指针通过重载指针相关操作并结合对象生命周期管理动态对象，减少手动 delete 带来的风险。",
+        points: ["重载 -> 和 * 可让对象具备指针式访问语法。", "智能指针的核心价值是把动态对象空间回收绑定到对象生命周期。", "理解 new/delete 重载有助于掌握动态内存管理的扩展点。"]
+      },
+      {
+        no: "5",
+        title: "输入输出：面向对象途径",
+        source: "5 输入输出(面向对象途径).ppt",
+        summary: "C++ I/O 由标准库提供，通过流对象完成控制台和文件输入输出，并支持类型安全的数据转换。",
+        points: ["I/O 通常带缓冲区，用于协调内存和外设速度差异。", "掌握 cin、cout、fstream、格式控制和错误状态检测。", "文件 I/O 要检查打开、读取、写入是否成功。"]
+      },
+      {
+        no: "6",
+        title: "异常处理",
+        source: "6 异常处理.ppt",
+        summary: "异常处理用于应对运行环境导致的可预料但不可完全避免的错误，提高程序鲁棒性。",
+        points: ["区分语法错误、逻辑错误和运行异常。", "用 try、throw、catch 分离正常路径与异常处理路径。", "断言适合暴露调试期不变量错误，不应替代运行时异常处理。"]
+      },
+      {
+        no: "7-1",
+        title: "泛型程序设计：模板",
+        source: "7-1 泛型程序设计-模板.ppt",
+        summary: "模板用于编写与具体数据类型无关的通用代码，避免为 int、double、自定义类型重复实现同一算法或容器。",
+        points: ["函数模板抽象同一算法，类模板抽象同一数据结构。", "模板实例化会根据实际类型生成具体代码。", "模板复用要求明确类型需要满足的操作约束。"]
+      },
+      {
+        no: "7-2",
+        title: "基于 STL 的编程",
+        source: "7-2 基于STL的编程.ppt",
+        summary: "STL 用容器、迭代器和算法隐藏底层数组、链表和循环细节，支持面向序列数据的抽象编程。",
+        points: ["容器存储数据，迭代器指向和遍历元素，算法完成查找、排序、统计等操作。", "vector、algorithm、numeric 等组件能快速组合出清晰代码。", "学习 STL 时要同时关注复杂度和迭代器失效规则。"]
+      },
+      {
+        no: "8",
+        title: "函数式程序设计",
+        source: "8 函数式程序设计.ppt",
+        summary: "函数式程序设计属于声明式范式，更关注“要得到什么”，通过函数组合、映射、过滤和归约表达计算。",
+        points: ["对比命令式范式的步骤描述，声明式范式强调目标和关系。", "函数对象、lambda 和 STL 算法是 C++ 中实践函数式风格的重要工具。", "适合处理序列变换、统计、过滤和组合式数据处理。"]
+      },
+      {
+        no: "9-1",
+        title: "事件驱动的程序设计",
+        source: "9-1 事件驱动的程序设计.ppt",
+        summary: "事件驱动程序不按固定顺序主动执行所有流程，而是响应鼠标、键盘、菜单、窗口消息等事件。",
+        points: ["Windows 图形界面程序通过消息和窗口与用户交互。", "事件循环负责接收、分发和处理消息。", "面向对象和应用框架能把事件处理封装成更清晰的对象协作。"]
+      }
+    ];
+
+    const questionGroups = [
+      {
+        module: "基础语法",
+        level: "入门",
+        items: [
+          ["温度转换器", "读取摄氏温度并输出华氏温度，保留一位小数。", "使用 double 避免整数除法，公式为 f = c * 9 / 5 + 32。"],
+          ["闰年判断", "输入年份，判断是否为闰年。", "能被 400 整除，或能被 4 整除但不能被 100 整除。"],
+          ["三数最大值", "输入三个整数，输出最大值及其出现次数。", "用 max 求最大值，再遍历三个数统计等于最大值的数量。"],
+          ["分段函数计算", "根据 x 的范围输出不同公式结果。", "把区间边界写清楚，优先处理互斥区间，避免重复判断。"],
+          ["字符分类器", "输入一个字符，判断是数字、字母、空白还是其他。", "可用 <cctype> 中的 isdigit、isalpha、isspace，注意传入 unsigned char。"],
+          ["简单计算器", "读取两个数和运算符，完成四则运算。", "除法要处理除数为 0；switch 分支中给出非法运算符提示。"],
+          ["阶乘求和", "计算 1! + 2! + ... + n!。", "滚动维护当前阶乘 fact，每次 fact *= i 后累加，避免重复计算。"],
+          ["素数检测", "判断输入整数是否为素数。", "小于 2 不是素数，只需要试除到 i * i <= n。"],
+          ["乘法表生成", "输出 n 阶乘法表并对齐。", "使用 iomanip 的 setw 控制列宽，双层循环输出。"],
+          ["数字反转", "输入整数，输出反转后的数字。", "用取模和整除逐位处理；负数可以先记录符号再处理绝对值。"]
+        ]
+      },
+      {
+        module: "函数与递归",
+        level: "基础",
+        items: [
+          ["最大公约数", "编写 gcd(a, b)，支持负数输入。", "使用欧几里得算法，先取绝对值，循环到 b 为 0。"],
+          ["斐波那契迭代", "输出第 n 个斐波那契数。", "递归会重复计算；用两个变量滚动更新，时间 O(n)，空间 O(1)。"],
+          ["递归汉诺塔", "输出 n 个盘子的移动步骤。", "先移动 n-1 个到辅助柱，再移动最大盘，再移动 n-1 个到目标柱。"],
+          ["二分查找函数", "在有序数组中查找目标值下标。", "维护左闭右闭或左闭右开区间，循环不变量必须固定。"],
+          ["字符串回文判断", "判断字符串忽略大小写后是否回文。", "双指针从两端向中间移动，比较前统一转换大小写。"],
+          ["组合数计算", "实现 C(n, k) 函数，降低溢出风险。", "利用 C(n,k)=C(n,n-k)，每步先乘再除，必要时用 long long。"],
+          ["函数重载实验", "为 int、double、string 编写同名 print。", "观察重载解析规则，避免隐式转换导致二义性。"],
+          ["引用交换", "用引用参数交换两个变量。", "函数签名使用 void swapValue(int& a, int& b)，不要传值。"],
+          ["默认参数设计", "实现带默认分隔符的 join 函数。", "默认参数只放在声明处；调用时缺省参数从右向左省略。"],
+          ["尾递归改写", "把递归求和改写成循环。", "识别递归状态，把参数累积器变成循环变量，避免栈增长。"]
+        ]
+      },
+      {
+        module: "数组与字符串",
+        level: "基础",
+        items: [
+          ["数组去重", "保留输入顺序，删除重复整数。", "用 unordered_set 记录出现过的值，vector 保存首次出现的元素。"],
+          ["旋转数组", "将数组向右旋转 k 位。", "k %= n；可用三次 reverse：整体、前 k、后 n-k。"],
+          ["最长连续 1", "给定 0/1 数组，求最长连续 1 的长度。", "遇到 1 计数加一，遇到 0 清零并维护最大值。"],
+          ["字符串压缩", "把 aaabb 转为 a3b2。", "遍历时统计连续段，段结束时输出字符和计数。"],
+          ["单词反转", "反转句子中的单词顺序，保留单词内部顺序。", "可用 stringstream 拆词，再从后往前拼接。"],
+          ["括号匹配", "判断括号串是否合法。", "用栈保存左括号，遇到右括号检查栈顶是否匹配。"],
+          ["KMP 前缀表", "为模式串构建 next 或 lps 数组。", "j 表示已匹配前缀长度，失配时回退到 lps[j-1]。"],
+          ["最长公共前缀", "求字符串数组的最长公共前缀。", "以第一个字符串为候选，逐个缩短直到所有字符串匹配。"],
+          ["字符频率统计", "统计英文文本中字母出现次数。", "统一转小写后用 26 长度数组计数，过滤非字母字符。"],
+          ["大整数加法", "用字符串实现非负大整数相加。", "从低位向高位逐位加，维护 carry，最后反转结果。"]
+        ]
+      },
+      {
+        module: "STL 容器",
+        level: "基础",
+        items: [
+          ["成绩排名表", "按成绩降序、姓名升序输出学生。", "vector 存结构体，sort 自定义比较器，比较器需满足严格弱序。"],
+          ["LRU 缓存雏形", "实现固定容量缓存的 get/put。", "list 维护访问顺序，unordered_map 存 key 到 list 迭代器。"],
+          ["词频 Top K", "输出出现次数最高的 k 个单词。", "unordered_map 计数，priority_queue 或 sort 选出 Top K。"],
+          ["集合交集", "求两个整数集合的交集。", "用 unordered_set 存较小集合，再扫描另一个集合。"],
+          ["有序事件表", "按时间戳存储并查询事件。", "map 自动按键排序，lower_bound 可查找第一个不小于目标时间的事件。"],
+          ["队列模拟", "模拟排队办理业务并统计平均等待时间。", "queue 保存到达任务，按时间推进，注意空队列时跳到下一到达时间。"],
+          ["栈实现最小值", "设计支持 O(1) 获取最小值的栈。", "额外维护一个 minStack，同步记录当前最小值。"],
+          ["双端队列滑窗", "求滑动窗口最大值。", "deque 保存下标，保持对应值单调递减并移除过期下标。"],
+          ["迭代器失效分析", "删除 vector 中所有偶数。", "erase 会返回下一个有效迭代器，循环时用返回值继续。"],
+          ["稳定分组", "把及格和不及格学生分组且保持原顺序。", "stable_partition 保持相对顺序，谓词表达是否及格。"]
+        ]
+      },
+      {
+        module: "面向对象",
+        level: "进阶",
+        items: [
+          ["银行账户类", "设计 Account，支持存款、取款和余额查询。", "余额应私有化，取款前检查不变量，成员函数维护状态一致。"],
+          ["图形多态", "用基类 Shape 统一计算不同图形面积。", "基类提供 virtual area() 和 virtual 析构函数，派生类重写。"],
+          ["拷贝控制", "为管理动态数组的类实现拷贝构造和赋值。", "遵循三法则或直接用 vector；手写时先分配新资源再释放旧资源。"],
+          ["移动语义日志", "观察 vector 扩容时拷贝和移动调用次数。", "给类添加拷贝/移动构造日志，并把移动构造标记 noexcept。"],
+          ["不可变配置类", "设计构造后不可修改的 Config。", "成员设为 const 或只提供只读访问，构造函数完成合法性校验。"],
+          ["运算符重载", "为 Fraction 实现加法和输出。", "约分保持规范形式；operator+ 返回新对象，operator<< 返回 ostream&。"],
+          ["Pimpl 简化编译依赖", "把类实现细节隐藏到 Impl 中。", "头文件只声明 unique_ptr<Impl>，源文件定义 Impl 和成员函数。"],
+          ["接口与实现分离", "设计 Logger 接口并提供 ConsoleLogger。", "抽象类只保留纯虚函数；调用端依赖接口而非具体类。"],
+          ["对象池", "复用大量短生命周期对象。", "用容器保存空闲对象，获取时复用，释放时归还，注意所有权边界。"],
+          ["虚析构陷阱", "解释通过基类指针删除派生对象的风险。", "基类作为多态基类时析构函数必须 virtual，否则派生资源可能不释放。"]
+        ]
+      },
+      {
+        module: "现代 C++",
+        level: "进阶",
+        items: [
+          ["lambda 排序", "按多个字段对结构体数组排序。", "lambda 捕获外部排序方向，比较器中逐字段比较。"],
+          ["智能指针树", "用 unique_ptr 构建二叉树。", "父节点独占子节点所有权，递归销毁天然由 RAII 完成。"],
+          ["shared_ptr 循环引用", "模拟双向链表内存不释放问题。", "强引用环会导致引用计数无法归零，反向链接应使用 weak_ptr。"],
+          ["constexpr 阶乘", "实现可在编译期求值的阶乘。", "函数满足 constexpr 限制，参数是常量表达式时可编译期计算。"],
+          ["结构化绑定", "遍历 map 并直接取得 key/value。", "使用 for (const auto& [key, value] : mp) 提高可读性。"],
+          ["optional 返回值", "查找失败时避免魔法值。", "返回 optional<T>，调用端用 if (res) 判断是否存在。"],
+          ["variant 状态机", "用 variant 表示多种消息类型。", "std::visit 分发处理不同类型，避免手写类型标签。"],
+          ["模板最大值", "编写适用于任意可比较类型的 maxValue。", "模板函数依赖 operator<；复杂约束可用 concept 限制。"],
+          ["ranges 过滤", "筛选偶数并平方输出。", "使用 views::filter 和 views::transform 组合管道，注意视图惰性求值。"],
+          ["span 参数", "函数只读访问连续数组而不复制。", "std::span<const T> 可接收 vector、array、C 数组，表达非拥有视图。"]
+        ]
+      },
+      {
+        module: "算法与数据结构",
+        level: "进阶",
+        items: [
+          ["两数之和", "返回数组中和为 target 的两个下标。", "unordered_map 存值到下标，扫描时查 target - x。"],
+          ["区间合并", "合并重叠区间。", "先按左端点排序，再维护当前合并区间的右端点。"],
+          ["最短子数组", "求和至少为 S 的最短连续子数组。", "正整数数组可用滑动窗口，移动左端缩短区间。"],
+          ["岛屿数量", "二维网格中统计连通块。", "DFS/BFS 标记访问过的陆地，四方向扩展。"],
+          ["拓扑排序", "判断课程依赖能否完成。", "统计入度，队列处理入度为 0 的点，最终数量等于节点数则无环。"],
+          ["Dijkstra 最短路", "求非负权图单源最短路。", "优先队列取当前最短距离，跳过过期状态，松弛邻边。"],
+          ["并查集朋友圈", "统计连通分量数量。", "路径压缩加按秩合并，合并成功时分量数减一。"],
+          ["背包最大价值", "0/1 背包一维优化。", "容量从大到小遍历，避免同一物品被重复使用。"],
+          ["最长递增子序列", "求 LIS 长度。", "维护 tails 数组，用 lower_bound 替换第一个大于等于当前值的位置。"],
+          ["前缀和查询", "多次区间求和。", "prefix[i+1]=prefix[i]+a[i]，区间 [l,r] 和为 prefix[r+1]-prefix[l]。"]
+        ]
+      },
+      {
+        module: "文件与工程",
+        level: "综合",
+        items: [
+          ["CSV 成绩统计", "读取 CSV 并输出平均分、最高分。", "逐行 getline，再用 stringstream 按逗号拆分，注意空字段。"],
+          ["日志过滤器", "按级别和关键词筛选日志文件。", "流式读取避免一次加载大文件，匹配后写入输出文件。"],
+          ["命令行参数解析", "支持 -i 输入和 -o 输出参数。", "遍历 argv，遇到选项读取后一个参数，缺失时给出错误提示。"],
+          ["头文件防卫", "为小型数学库拆分 .h 和 .cpp。", "头文件放声明和 include guard，源文件放定义，避免重复定义。"],
+          ["CMake 单可执行程序", "为 main.cpp 写最小 CMakeLists。", "cmake_minimum_required、project、add_executable 是最小骨架。"],
+          ["单元测试雏形", "为 add 函数写简单断言测试。", "先用 assert 覆盖正常和边界输入，再逐步引入测试框架。"],
+          ["配置文件读取", "读取 key=value 配置。", "忽略空行和注释，按第一个 = 分割并 trim 两侧空白。"],
+          ["异常安全复制", "实现文件复制，失败时不留下半成品。", "写到临时文件，成功后 rename 替换；异常时删除临时文件。"],
+          ["跨平台路径", "遍历目录并统计文件扩展名。", "使用 std::filesystem::directory_iterator，path.extension() 获取扩展名。"],
+          ["编译警告清零", "修复一段有未初始化变量和窄化转换的代码。", "开启 -Wall -Wextra，把警告当成设计反馈逐个消除。"]
+        ]
+      },
+      {
+        module: "并发与性能",
+        level: "综合",
+        items: [
+          ["线程求和", "把大数组分块并行求和。", "每个线程写入独立槽位，主线程 join 后汇总，避免共享写冲突。"],
+          ["互斥计数器", "多个线程安全递增计数器。", "用 mutex 保护临界区，或用 atomic<int> 处理简单计数。"],
+          ["生产者消费者", "实现有界任务队列。", "mutex 加 condition_variable，生产者等待非满，消费者等待非空。"],
+          ["死锁复现", "两个线程以不同顺序锁两个 mutex。", "统一加锁顺序或使用 std::scoped_lock 同时锁定多个互斥量。"],
+          ["异步任务", "用 async 计算多个文件的行数。", "future 保存结果，get 会等待任务完成并传播异常。"],
+          ["缓存友好矩阵遍历", "比较按行和按列遍历二维数组速度。", "连续内存按行访问更符合缓存局部性，通常更快。"],
+          ["字符串拼接优化", "大量拼接字符串并减少重分配。", "预估长度后 reserve，循环中使用 append 或 operator+=。"],
+          ["移动避免复制", "返回大 vector 并观察性能。", "现代编译器有返回值优化；需要转移所有权时使用移动语义。"],
+          ["性能计时器", "封装 ScopeTimer 输出耗时。", "构造时记录 start，析构时计算 duration，利用 RAII 自动打印。"],
+          ["原子标志停止线程", "用 atomic<bool> 通知工作线程退出。", "循环中检查 stop flag，主线程设置后 join，避免数据竞争。"]
+        ]
+      },
+      {
+        module: "综合项目",
+        level: "综合",
+        items: [
+          ["通讯录管理器", "实现增删改查和文件保存。", "用 vector 存联系人，按姓名或电话索引查询，退出前序列化到文件。"],
+          ["待办事项 CLI", "支持添加、完成、删除和按状态筛选。", "设计 Task 结构体，命令行分发动作，持久化为 JSON 或简单文本。"],
+          ["迷你表达式求值器", "计算含 + - * / 和括号的表达式。", "用两个栈或递归下降解析，明确优先级和错误处理。"],
+          ["简易内存池", "为固定大小对象提供 allocate/free。", "预分配块并维护空闲链表，注意对齐和重复释放保护。"],
+          ["HTTP 请求解析", "解析请求行和头部字段。", "按 CRLF 分行，第一行拆 method/path/version，头部用 map 保存。"],
+          ["文本索引器", "读取多个文件，按关键词检索所在行。", "建立 unordered_map<string, vector<Location>> 倒排索引。"],
+          ["小游戏排行榜", "保存玩家分数并显示前十名。", "读入历史记录，插入新分数后排序，保留 Top 10。"],
+          ["插件式命令系统", "为不同命令注册处理函数。", "unordered_map<string, function<int(args)>> 存命令到回调。"],
+          ["简单线程池", "提交任务并由固定线程执行。", "任务队列加条件变量，析构时通知停止并 join 所有线程。"],
+          ["学生选课系统", "管理学生、课程和选课关系。", "把实体和关系分开建模，使用 ID 关联，保存和加载时校验一致性。"]
+        ]
+      }
+    ];
+
+    const solutionCodes = [
+`double celsiusToFahrenheit(double c) {
+  return c * 9.0 / 5.0 + 32.0;
+}`,
+`bool isLeapYear(int year) {
+  return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
+}`,
+`pair<int, int> maxValueAndCount(int a, int b, int c) {
+  int mx = std::max({a, b, c});
+  int count = (a == mx) + (b == mx) + (c == mx);
+  return {mx, count};
+}`,
+`double piecewise(double x) {
+  if (x < 0) return -x;
+  if (x <= 10) return x * x + 2 * x + 1;
+  return 3 * x - 5;
+}`,
+`std::string classify(char ch) {
+  unsigned char c = static_cast<unsigned char>(ch);
+  if (std::isdigit(c)) return "数字";
+  if (std::isalpha(c)) return "字母";
+  if (std::isspace(c)) return "空白";
+  return "其他";
+}`,
+`double calculate(double a, char op, double b) {
+  if (op == '+') return a + b;
+  if (op == '-') return a - b;
+  if (op == '*') return a * b;
+  if (op == '/' && b != 0) return a / b;
+  throw std::invalid_argument("非法运算");
+}`,
+`long long factorialSum(int n) {
+  long long fact = 1, sum = 0;
+  for (int i = 1; i <= n; ++i) {
+    fact *= i;
+    sum += fact;
+  }
+  return sum;
+}`,
+`bool isPrime(int n) {
+  if (n < 2) return false;
+  for (int i = 2; i * i <= n; ++i) {
+    if (n % i == 0) return false;
+  }
+  return true;
+}`,
+`void printTable(int n) {
+  for (int i = 1; i <= n; ++i) {
+    for (int j = 1; j <= i; ++j) {
+      std::cout << std::setw(4) << i * j;
+    }
+    std::cout << std::endl;
+  }
+}`,
+`int reverseNumber(int x) {
+  int sign = x < 0 ? -1 : 1;
+  x = std::abs(x);
+  int ans = 0;
+  while (x > 0) {
+    ans = ans * 10 + x % 10;
+    x /= 10;
+  }
+  return sign * ans;
+}`,
+`int gcd(int a, int b) {
+  a = std::abs(a);
+  b = std::abs(b);
+  while (b != 0) {
+    int r = a % b;
+    a = b;
+    b = r;
+  }
+  return a;
+}`,
+`long long fib(int n) {
+  if (n <= 1) return n;
+  long long a = 0, b = 1;
+  for (int i = 2; i <= n; ++i) {
+    long long c = a + b;
+    a = b;
+    b = c;
+  }
+  return b;
+}`,
+`void hanoi(int n, char from, char mid, char to) {
+  if (n == 0) return;
+  hanoi(n - 1, from, to, mid);
+  std::cout << from << " -> " << to << std::endl;
+  hanoi(n - 1, mid, from, to);
+}`,
+`int binarySearch(const vector<int>& a, int target) {
+  int l = 0, r = static_cast<int>(a.size()) - 1;
+  while (l <= r) {
+    int m = l + (r - l) / 2;
+    if (a[m] == target) return m;
+    if (a[m] < target) l = m + 1;
+    else r = m - 1;
+  }
+  return -1;
+}`,
+`bool isPalindrome(std::string s) {
+  int l = 0, r = static_cast<int>(s.size()) - 1;
+  while (l < r) {
+    if (std::tolower(s[l]) != std::tolower(s[r])) return false;
+    ++l;
+    --r;
+  }
+  return true;
+}`,
+`long long combination(int n, int k) {
+  k = std::min(k, n - k);
+  long long ans = 1;
+  for (int i = 1; i <= k; ++i) {
+    ans = ans * (n - k + i) / i;
+  }
+  return ans;
+}`,
+`void print(int x) { std::cout << x; }
+void print(double x) { std::cout << x; }
+void print(const std::string& x) { std::cout << x; }`,
+`void swapValue(int& a, int& b) {
+  int temp = a;
+  a = b;
+  b = temp;
+}`,
+`std::string join(const vector<string>& words, const string& sep = ",") {
+  std::string ans;
+  for (int i = 0; i < static_cast<int>(words.size()); ++i) {
+    if (i > 0) ans += sep;
+    ans += words[i];
+  }
+  return ans;
+}`,
+`long long sumLoop(int n) {
+  long long ans = 0;
+  for (int i = 1; i <= n; ++i) {
+    ans += i;
+  }
+  return ans;
+}`,
+`vector<int> uniqueKeepOrder(const vector<int>& a) {
+  unordered_set<int> seen;
+  vector<int> ans;
+  for (int x : a) {
+    if (!seen.count(x)) {
+      seen.insert(x);
+      ans.push_back(x);
+    }
+  }
+  return ans;
+}`,
+`void rotateRight(vector<int>& a, int k) {
+  if (a.empty()) return;
+  k %= static_cast<int>(a.size());
+  std::reverse(a.begin(), a.end());
+  std::reverse(a.begin(), a.begin() + k);
+  std::reverse(a.begin() + k, a.end());
+}`,
+`int longestOnes(const vector<int>& a) {
+  int cur = 0, best = 0;
+  for (int x : a) {
+    cur = x == 1 ? cur + 1 : 0;
+    best = std::max(best, cur);
+  }
+  return best;
+}`,
+`std::string compress(const std::string& s) {
+  std::string ans;
+  for (int i = 0; i < static_cast<int>(s.size()); ) {
+    int j = i;
+    while (j < static_cast<int>(s.size()) && s[j] == s[i]) ++j;
+    ans += s[i] + std::to_string(j - i);
+    i = j;
+  }
+  return ans;
+}`,
+`std::string reverseWords(const std::string& text) {
+  std::stringstream ss(text);
+  vector<string> words;
+  for (string w; ss >> w; ) words.push_back(w);
+  std::reverse(words.begin(), words.end());
+  std::string ans;
+  for (int i = 0; i < static_cast<int>(words.size()); ++i) {
+    if (i > 0) ans += " ";
+    ans += words[i];
+  }
+  return ans;
+}`,
+`bool validBrackets(const std::string& s) {
+  std::stack<char> st;
+  unordered_map<char, char> mp = {{')','('}, {']','['}, {'}','{'}};
+  for (char c : s) {
+    if (c == '(' || c == '[' || c == '{') st.push(c);
+    else if (mp.count(c)) {
+      if (st.empty() || st.top() != mp[c]) return false;
+      st.pop();
+    }
+  }
+  return st.empty();
+}`,
+`vector<int> buildLps(const std::string& p) {
+  vector<int> lps(p.size());
+  for (int i = 1, j = 0; i < static_cast<int>(p.size()); ++i) {
+    while (j > 0 && p[i] != p[j]) j = lps[j - 1];
+    if (p[i] == p[j]) ++j;
+    lps[i] = j;
+  }
+  return lps;
+}`,
+`std::string longestCommonPrefix(vector<string> words) {
+  if (words.empty()) return "";
+  std::string prefix = words[0];
+  for (const string& w : words) {
+    while (w.find(prefix) != 0) prefix.pop_back();
+  }
+  return prefix;
+}`,
+`array<int, 26> letterFreq(const std::string& text) {
+  array<int, 26> cnt{};
+  for (unsigned char ch : text) {
+    if (std::isalpha(ch)) {
+      cnt[std::tolower(ch) - 'a']++;
+    }
+  }
+  return cnt;
+}`,
+`std::string addBig(std::string a, std::string b) {
+  std::string ans;
+  int i = a.size() - 1, j = b.size() - 1, carry = 0;
+  while (i >= 0 || j >= 0 || carry) {
+    int sum = carry;
+    if (i >= 0) sum += a[i--] - '0';
+    if (j >= 0) sum += b[j--] - '0';
+    ans.push_back(char('0' + sum % 10));
+    carry = sum / 10;
+  }
+  std::reverse(ans.begin(), ans.end());
+  return ans;
+}`,
+`struct Student { string name; int score; };
+void rankStudents(vector<Student>& students) {
+  std::sort(students.begin(), students.end(), [](const Student& a, const Student& b) {
+    if (a.score != b.score) return a.score > b.score;
+    return a.name < b.name;
+  });
+}`,
+`class LRUCache {
+  list<int> order;
+  unordered_map<int, list<int>::iterator> pos;
+public:
+  void touch(int key) {
+    if (pos.count(key)) order.erase(pos[key]);
+    order.push_front(key);
+    pos[key] = order.begin();
+  }
+};`,
+`vector<pair<string,int>> topKWords(const vector<string>& words, int k) {
+  unordered_map<string, int> cnt;
+  for (const string& w : words) cnt[w]++;
+  vector<pair<string,int>> items(cnt.begin(), cnt.end());
+  std::sort(items.begin(), items.end(), [](auto& a, auto& b) {
+    return a.second != b.second ? a.second > b.second : a.first < b.first;
+  });
+  if (items.size() > static_cast<size_t>(k)) items.resize(k);
+  return items;
+}`,
+`vector<int> intersection(vector<int> a, vector<int> b) {
+  unordered_set<int> s(a.begin(), a.end());
+  vector<int> ans;
+  for (int x : b) {
+    if (s.erase(x)) ans.push_back(x);
+  }
+  return ans;
+}`,
+`string findEvent(const map<int, string>& events, int time) {
+  auto it = events.lower_bound(time);
+  if (it == events.end()) return "没有后续事件";
+  return it->second;
+}`,
+`double averageWait(vector<int> arrive, vector<int> cost) {
+  long long now = 0, wait = 0;
+  for (int i = 0; i < static_cast<int>(arrive.size()); ++i) {
+    now = std::max<long long>(now, arrive[i]);
+    wait += now - arrive[i];
+    now += cost[i];
+  }
+  return arrive.empty() ? 0.0 : double(wait) / arrive.size();
+}`,
+`class MinStack {
+  stack<int> data, mins;
+public:
+  void push(int x) {
+    data.push(x);
+    mins.push(mins.empty() ? x : std::min(x, mins.top()));
+  }
+  void pop() { data.pop(); mins.pop(); }
+  int getMin() const { return mins.top(); }
+};`,
+`vector<int> windowMax(const vector<int>& a, int k) {
+  deque<int> q;
+  vector<int> ans;
+  for (int i = 0; i < static_cast<int>(a.size()); ++i) {
+    while (!q.empty() && q.front() <= i - k) q.pop_front();
+    while (!q.empty() && a[q.back()] <= a[i]) q.pop_back();
+    q.push_back(i);
+    if (i >= k - 1) ans.push_back(a[q.front()]);
+  }
+  return ans;
+}`,
+`void eraseEven(vector<int>& a) {
+  for (auto it = a.begin(); it != a.end(); ) {
+    if (*it % 2 == 0) it = a.erase(it);
+    else ++it;
+  }
+}`,
+`struct StudentPass { string name; int score; };
+void groupPass(vector<StudentPass>& a) {
+  std::stable_partition(a.begin(), a.end(), [](const StudentPass& s) {
+    return s.score >= 60;
+  });
+}`,
+`class Account {
+  double balance = 0;
+public:
+  void deposit(double money) { if (money > 0) balance += money; }
+  bool withdraw(double money) {
+    if (money <= 0 || money > balance) return false;
+    balance -= money;
+    return true;
+  }
+  double getBalance() const { return balance; }
+};`,
+`class Shape {
+public:
+  virtual ~Shape() = default;
+  virtual double area() const = 0;
+};
+class Circle : public Shape {
+  double r;
+public:
+  explicit Circle(double radius) : r(radius) {}
+  double area() const override { return 3.1415926 * r * r; }
+};`,
+`class Buffer {
+  int* data;
+  int n;
+public:
+  Buffer(int size) : data(new int[size]{}), n(size) {}
+  ~Buffer() { delete[] data; }
+  Buffer(const Buffer& other) : data(new int[other.n]), n(other.n) {
+    std::copy(other.data, other.data + n, data);
+  }
+};`,
+`class Text {
+  std::string value;
+public:
+  Text(std::string v) : value(std::move(v)) {}
+  Text(Text&& other) noexcept : value(std::move(other.value)) {
+    std::cout << "move";
+  }
+};`,
+`class Config {
+  const std::string host;
+  const int port;
+public:
+  Config(std::string h, int p) : host(std::move(h)), port(p) {
+    if (port <= 0) throw std::invalid_argument("端口非法");
+  }
+  std::string getHost() const { return host; }
+  int getPort() const { return port; }
+};`,
+`class Fraction {
+  int num, den;
+  void normalize() {
+    int g = std::gcd(num, den);
+    num /= g;
+    den /= g;
+  }
+public:
+  Fraction(int n, int d) : num(n), den(d) { normalize(); }
+  Fraction operator+(const Fraction& rhs) const {
+    return Fraction(num * rhs.den + rhs.num * den, den * rhs.den);
+  }
+};`,
+`class Widget {
+  struct Impl;
+  std::unique_ptr<Impl> p;
+public:
+  Widget();
+  ~Widget();
+  void draw();
+};`,
+`class Logger {
+public:
+  virtual ~Logger() = default;
+  virtual void log(const std::string& msg) = 0;
+};
+class ConsoleLogger : public Logger {
+public:
+  void log(const std::string& msg) override { std::cout << msg; }
+};`,
+`template<class T>
+class ObjectPool {
+  vector<unique_ptr<T>> freeList;
+public:
+  unique_ptr<T> acquire() {
+    if (freeList.empty()) return std::make_unique<T>();
+    auto obj = std::move(freeList.back());
+    freeList.pop_back();
+    return obj;
+  }
+};`,
+`class Base {
+public:
+  virtual ~Base() = default;
+};
+class Derived : public Base {
+  std::unique_ptr<int[]> data;
+public:
+  Derived() : data(std::make_unique<int[]>(100)) {}
+};`
+    ];
+
+    const questions = questionGroups.flatMap((group) =>
+      group.items.map((item) => ({
+        module: group.module,
+        level: group.level,
+        title: item[0],
+        task: item[1],
+        analysis: item[2]
+      }))
+    ).slice(0, 50).map((q, index) => {
+      const id = index + 1;
+      const code = `#include <bits/stdc++.h>
+using namespace std;
+
+${solutionCodes[index]}`;
+      return {
+        ...q,
+        id,
+        code,
+        lineNotes: code.split("\n").map((line, lineIndex) => ({
+          line: lineIndex + 1,
+          code: line,
+          note: explainCodeLine(line, lineIndex, q)
+        }))
+      };
+    });
+
+    function explainCodeLine(line, index, question) {
+      const text = line.trim();
+      if (!text) return "空行用于分隔代码块，让结构更容易阅读。";
+      if (text.startsWith("#include")) return "引入标准库头文件，为后续使用容器、算法或输入输出做准备。";
+      if (/^(class|struct)\s+/.test(text)) return "定义一个类型，把相关数据和操作组织到同一个抽象中。";
+      if (text.endsWith("{") && text.includes("(")) return "定义函数或成员函数入口，参数就是本题需要处理的输入。";
+      if (text.startsWith("public:")) return "从这里开始的成员构成类的公开接口，外部代码可以调用。";
+      if (text.startsWith("private:")) return "从这里开始的成员只允许类内部访问，用来保护对象状态。";
+      if (text.startsWith("return")) return "返回当前计算结果或判断结果，是本段代码的输出点。";
+      if (text.startsWith("if")) return "处理边界条件或分支情况，避免非法输入进入主逻辑。";
+      if (text.startsWith("else")) return "承接前一个条件不成立时的替代处理路径。";
+      if (text.startsWith("for")) return "使用循环遍历输入数据或执行固定次数的计算。";
+      if (text.startsWith("while")) return "使用条件循环，在状态尚未满足目标前持续推进。";
+      if (text.includes("std::sort")) return "调用标准库排序，把比较规则集中在比较器中。";
+      if (text.includes("std::reverse")) return "调用标准库反转区间，避免手写下标交换。";
+      if (text.includes("std::max") || text.includes("std::min")) return "使用标准库比较函数更新最大值或最小值。";
+      if (text.includes("push_back") || text.includes("push_front")) return "把新结果写入容器，保留后续输出需要的数据。";
+      if (text.includes("pop_back") || text.includes("pop_front") || text.includes(".pop()")) return "移除已经处理完或已经失效的元素。";
+      if (text.includes("throw")) return "遇到非法状态时抛出异常，让调用者显式处理错误。";
+      if (text.includes("new ") || text.includes("make_unique")) return "申请或创建动态资源，后续要依赖 RAII 或析构函数释放。";
+      if (text.includes("delete")) return "释放此前申请的动态资源，防止内存泄漏。";
+      if (text.includes("override")) return "重写基类虚函数，使派生类提供自己的多态行为。";
+      if (text.includes("virtual")) return "声明虚函数或虚析构函数，为通过基类接口使用对象提供动态绑定能力。";
+      if (text.includes("=")) return "更新局部变量、对象状态或中间结果，推动算法向答案收敛。";
+      if (text === "};" || text === "}") return "结束当前类、函数或控制块，代码块的作用域到这里为止。";
+      return `这一行服务于“${question.title}”的核心逻辑，配合上下文完成数据处理。`;
+    }
+
+    function renderLectures() {
+      const grid = document.querySelector("#lectureGrid");
+      grid.innerHTML = lectureChapters.map((chapter) => `
+        <a class="lecture-card" href="${encodeURI(`cpp_lectures_extract/${chapter.source}`)}" target="_blank" rel="noopener noreferrer" title="打开 ${chapter.source}">
+          <div class="lecture-index">${chapter.no}</div>
+          <div>
+            <h3>${chapter.title}</h3>
+            <div class="lecture-meta">
+              <span class="tag blue">${chapter.source}</span>
+              <span class="tag green">打开讲稿</span>
+            </div>
+            <p>${chapter.summary}</p>
+            <ul>
+              ${chapter.points.map((point) => `<li>${point}</li>`).join("")}
+            </ul>
+          </div>
+        </a>
+      `).join("");
+    }
+
+    function renderResources() {
+      const grid = document.querySelector("#resourceGrid");
+      grid.innerHTML = resources.map((item) => `
+        <article class="resource-card">
+          <div class="resource-top">
+            <span class="tag ${item.tone}">${item.type}</span>
+          </div>
+          <h3>${item.title}</h3>
+          <p>${item.desc}</p>
+          <a href="${item.url}" target="_blank" rel="noopener noreferrer">打开资源 <span aria-hidden="true">↗</span></a>
+        </article>
+      `).join("");
+    }
+
+    function setupFilters() {
+      const moduleFilter = document.querySelector("#moduleFilter");
+      const modules = [...new Set(questions.map((q) => q.module))];
+      moduleFilter.insertAdjacentHTML("beforeend", modules.map((m) => `<option value="${m}">${m}</option>`).join(""));
+
+      document.querySelector("#searchInput").addEventListener("input", renderQuestions);
+      moduleFilter.addEventListener("change", renderQuestions);
+      document.querySelector("#levelFilter").addEventListener("change", renderQuestions);
+    }
+
+    function renderQuestions() {
+      const keyword = document.querySelector("#searchInput").value.trim().toLowerCase();
+      const moduleValue = document.querySelector("#moduleFilter").value;
+      const levelValue = document.querySelector("#levelFilter").value;
+      const list = document.querySelector("#practiceList");
+      const empty = document.querySelector("#emptyState");
+
+      const filtered = questions.filter((q) => {
+        const haystack = `${q.title} ${q.module} ${q.level} ${q.task} ${q.analysis}`.toLowerCase();
+        return (!keyword || haystack.includes(keyword))
+          && (moduleValue === "all" || q.module === moduleValue)
+          && (levelValue === "all" || q.level === levelValue);
+      });
+
+      list.innerHTML = filtered.map((q) => `
+        <article class="practice-card">
+          <a class="practice-link" href="#question-${String(q.id).padStart(2, "0")}">
+            <span class="qid">${String(q.id).padStart(2, "0")}</span>
+            <span class="practice-title">
+              <strong>${q.title}</strong>
+              <span class="meta">
+                <span class="tag blue">${q.module}</span>
+                <span class="tag ${q.level === "综合" ? "orange" : "green"}">${q.level}</span>
+              </span>
+            </span>
+            <span class="chevron">查看解析</span>
+          </a>
+        </article>
+      `).join("");
+
+      empty.style.display = filtered.length ? "none" : "block";
+    }
+
+    function renderQuestionDetail(question) {
+      const detail = document.querySelector("#questionDetail");
+      detail.hidden = false;
+      document.querySelector("#detailModule").textContent = question.module;
+      document.querySelector("#detailLevel").textContent = question.level;
+      document.querySelector("#detailTitle").textContent = `${String(question.id).padStart(2, "0")} ${question.title}`;
+      document.querySelector("#detailTask").textContent = question.task;
+      document.querySelector("#detailAnalysis").textContent = question.analysis;
+      document.querySelector("#detailCode").textContent = question.code;
+      document.querySelector("#detailLines").innerHTML = question.lineNotes.map((note) => `
+        <div class="line-note">
+          <span class="line-no">L${note.line}</span>
+          <div>
+            <code>${escapeHtml(note.code || " ")}</code>
+            <p>${note.note}</p>
+          </div>
+        </div>
+      `).join("");
+      detail.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function handleRoute() {
+      const match = location.hash.match(/^#question-(\d+)$/);
+      if (!match) {
+        document.querySelector("#questionDetail").hidden = true;
+        return;
+      }
+      const id = Number(match[1]);
+      const question = questions.find((item) => item.id === id);
+      if (question) renderQuestionDetail(question);
+    }
+
+    function escapeHtml(value) {
+      return value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    renderResources();
+    renderLectures();
+    setupFilters();
+    renderQuestions();
+    window.addEventListener("hashchange", handleRoute);
+    handleRoute();
+  </script>
+</body>
+</html>
