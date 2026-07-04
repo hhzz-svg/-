@@ -1,12 +1,12 @@
 /*
- * Î§ÆåÓÎÏ·ÏµÍ³ - Part 2: Í¼ĞÎäÖÈ¾Ä£¿é
- * ¸ºÔğÈË: 251880599 ÌÆñ´Ìí
- * ÊµÏÖ: ÆåÅÌ»æÖÆ¡¢Æå×Ó»æÖÆ¡¢UI½çÃæ¡¢¶¯»­Ğ§¹û
+ * å›´æ£‹æ¸¸æˆç³»ç»Ÿ - Part 2: å›¾å½¢æ¸²æŸ“æ¨¡å—
+ * è´Ÿè´£äºº: 251880599 å”ç¿Šæ·»
+ * å®ç°: æ£‹ç›˜ç»˜åˆ¶ã€æ£‹å­ç»˜åˆ¶ã€UIç•Œé¢ã€åŠ¨ç”»æ•ˆæœ
  */
 
 #include "Part1_Core.h"
 
- // ¼ÓÔØÍ¼Æ¬×ÊÔ´
+ // åŠ è½½å›¾ç‰‡èµ„æº
 void loadImages() {
     if (_access("board.png", 0) == 0) {
         loadimage(&imgBoard, _T("board.png"));
@@ -21,13 +21,13 @@ void loadImages() {
     }
 }
 
-// »æÖÆÁ¢Ìå°×É«Æå×Ó
+// ç»˜åˆ¶ç«‹ä½“ç™½è‰²æ£‹å­
 void drawWhiteStone(int px, int py) {
-    // µ×²¿ÒõÓ°
+    // åº•éƒ¨é˜´å½±
     setfillcolor(RGB(180, 180, 180));
     solidcircle(px + 2, py + 2, STONE_RADIUS);
 
-    // Ö÷Ìå½¥±ä
+    // ä¸»ä½“æ¸å˜
     for (int i = STONE_RADIUS; i > 0; i--) {
         int gray = 245 - (STONE_RADIUS - i) * 5;
         if (gray < 200) gray = 200;
@@ -35,25 +35,25 @@ void drawWhiteStone(int px, int py) {
         solidcircle(px, py, i);
     }
 
-    // ¸ß¹âĞ§¹û
+    // é«˜å…‰æ•ˆæœ
     setfillcolor(RGB(255, 255, 255));
     solidcircle(px - 4, py - 4, 5);
     setfillcolor(RGB(250, 250, 250));
     solidcircle(px - 3, py - 3, 3);
 
-    // ±ßÔµÃè±ß
+    // è¾¹ç¼˜æè¾¹
     setlinecolor(RGB(160, 160, 160));
     setlinestyle(PS_SOLID, 2);
     circle(px, py, STONE_RADIUS);
 }
 
-// »æÖÆÁ¢ÌåºÚÉ«Æå×Ó
+// ç»˜åˆ¶ç«‹ä½“é»‘è‰²æ£‹å­
 void drawBlackStone(int px, int py) {
-    // µ×²¿ÒõÓ°
+    // åº•éƒ¨é˜´å½±
     setfillcolor(RGB(0, 0, 0));
     solidcircle(px + 2, py + 2, STONE_RADIUS);
 
-    // Ö÷Ìå½¥±ä
+    // ä¸»ä½“æ¸å˜
     for (int i = STONE_RADIUS; i > 0; i--) {
         int gray = 30 + (STONE_RADIUS - i) * 3;
         if (gray > 60) gray = 60;
@@ -61,25 +61,25 @@ void drawBlackStone(int px, int py) {
         solidcircle(px, py, i);
     }
 
-    // ¸ß¹âĞ§¹û
+    // é«˜å…‰æ•ˆæœ
     setfillcolor(RGB(120, 120, 120));
     solidcircle(px - 5, py - 5, 4);
     setfillcolor(RGB(90, 90, 90));
     solidcircle(px - 4, py - 4, 2);
 
-    // ±ßÔµ¸ß¹â»¡
+    // è¾¹ç¼˜é«˜å…‰å¼§
     setlinecolor(RGB(80, 80, 80));
     setlinestyle(PS_SOLID, 2);
     arc(px - STONE_RADIUS, py - STONE_RADIUS,
         px + STONE_RADIUS, py + STONE_RADIUS, 3.5, 2.5);
 
-    // Íâ±ß¿ò
+    // å¤–è¾¹æ¡†
     setlinecolor(RGB(0, 0, 0));
     setlinestyle(PS_SOLID, 2);
     circle(px, py, STONE_RADIUS);
 }
 
-// Ê¹ÓÃÍ¼Æ¬»ò´úÂë»æÖÆÆå×Ó
+// ä½¿ç”¨å›¾ç‰‡æˆ–ä»£ç ç»˜åˆ¶æ£‹å­
 void drawStoneWithImage(int x, int y, int color) {
     int px = BOARD_MARGIN + x * CELL_SIZE;
     int py = BOARD_MARGIN + y * CELL_SIZE;
@@ -101,7 +101,7 @@ void drawStoneWithImage(int x, int y, int color) {
         }
     }
 
-    // Âä×Ó¶¯»­Ğ§¹û
+    // è½å­åŠ¨ç”»æ•ˆæœ
     if (config.enableAnimation && x == lastMoveX && y == lastMoveY) {
         for (int i = 0; i < 3; i++) {
             setlinecolor(RGB(255 - i * 50, 0, 0));
@@ -111,11 +111,11 @@ void drawStoneWithImage(int x, int y, int color) {
     }
 }
 
-// »æÖÆÆåÅÌ
+// ç»˜åˆ¶æ£‹ç›˜
 void drawBoard() {
     cleardevice();
 
-    // ½¥±ä±³¾°
+    // æ¸å˜èƒŒæ™¯
     for (int y = 0; y < WINDOW_HEIGHT; y++) {
         int r = 220 - y / 15;
         int g = 179 - y / 20;
@@ -127,7 +127,7 @@ void drawBoard() {
         line(0, y, WINDOW_WIDTH, y);
     }
 
-    // ÆåÅÌÍâ¿ò×°ÊÎ
+    // æ£‹ç›˜å¤–æ¡†è£…é¥°
     setlinecolor(RGB(139, 90, 43));
     setlinestyle(PS_SOLID, 6);
     rectangle(BOARD_MARGIN - 15, BOARD_MARGIN - 15,
@@ -139,7 +139,7 @@ void drawBoard() {
         BOARD_MARGIN + (BOARD_SIZE - 1) * CELL_SIZE + 12,
         BOARD_MARGIN + (BOARD_SIZE - 1) * CELL_SIZE + 12);
 
-    // »æÖÆÍø¸ñ
+    // ç»˜åˆ¶ç½‘æ ¼
     setlinecolor(RGB(0, 0, 0));
     setlinestyle(PS_SOLID, 1);
 
@@ -151,7 +151,7 @@ void drawBoard() {
             pos, BOARD_MARGIN + (BOARD_SIZE - 1) * CELL_SIZE);
     }
 
-    // »æÖÆĞÇÎ»
+    // ç»˜åˆ¶æ˜Ÿä½
     int starPoints[9][2] = {
         {3, 3}, {3, 9}, {3, 15},
         {9, 3}, {9, 9}, {9, 15},
@@ -167,20 +167,20 @@ void drawBoard() {
         solidcircle(x - 1, y - 1, 3);
     }
 
-    // »æÖÆ×ø±ê±ê¼Ç
+    // ç»˜åˆ¶åæ ‡æ ‡è®°
     setbkmode(TRANSPARENT);
     settextcolor(RGB(80, 50, 20));
     settextstyle(16, 0, _T("Arial"));
 
     for (int i = 0; i < BOARD_SIZE; i++) {
         TCHAR label[3];
-        // ºá×ø±ê A-T (Ìø¹ıI)
+        // æ¨ªåæ ‡ A-T (è·³è¿‡I)
         _stprintf(label, _T("%c"), i < 8 ? 'A' + i : 'A' + i + 1);
         outtextxy(BOARD_MARGIN + i * CELL_SIZE - 5, BOARD_MARGIN - 30, label);
         outtextxy(BOARD_MARGIN + i * CELL_SIZE - 5,
             BOARD_MARGIN + (BOARD_SIZE - 1) * CELL_SIZE + 18, label);
 
-        // ×İ×ø±ê 1-19
+        // çºµåæ ‡ 1-19
         _stprintf(label, _T("%d"), BOARD_SIZE - i);
         int offset = (BOARD_SIZE - i) >= 10 ? 30 : 25;
         outtextxy(BOARD_MARGIN - offset, BOARD_MARGIN + i * CELL_SIZE - 8, label);
@@ -188,7 +188,7 @@ void drawBoard() {
             BOARD_MARGIN + i * CELL_SIZE - 8, label);
     }
 
-    // »æÖÆÆå×Ó
+    // ç»˜åˆ¶æ£‹å­
     for (int i = 0; i < BOARD_SIZE; i++) {
         for (int j = 0; j < BOARD_SIZE; j++) {
             if (gameState.board[i][j] != EMPTY) {
@@ -197,7 +197,7 @@ void drawBoard() {
         }
     }
 
-    // ±ê¼Ç×îºóÒ»ÊÖ
+    // æ ‡è®°æœ€åä¸€æ‰‹
     if (lastMoveX >= 0 && lastMoveY >= 0) {
         int x = BOARD_MARGIN + lastMoveX * CELL_SIZE;
         int y = BOARD_MARGIN + lastMoveY * CELL_SIZE;
@@ -211,7 +211,7 @@ void drawBoard() {
         circle(x, y, STONE_RADIUS + 3);
     }
 
-    // ÏÔÊ¾ÌáÊ¾Î»ÖÃ
+    // æ˜¾ç¤ºæç¤ºä½ç½®
     if (hintX >= 0 && hintY >= 0) {
         int x = BOARD_MARGIN + hintX * CELL_SIZE;
         int y = BOARD_MARGIN + hintY * CELL_SIZE;
@@ -227,41 +227,52 @@ void drawBoard() {
     drawUI();
 }
 
-// »æÖÆUIĞÅÏ¢
+// ç»˜åˆ¶UIä¿¡æ¯
 void drawUI() {
     int uiX = BOARD_MARGIN + BOARD_SIZE * CELL_SIZE + 40;
 
     setbkmode(TRANSPARENT);
 
-    // ±êÌâ¿ò
+    // æ ‡é¢˜æ¡†
     setfillcolor(RGB(139, 90, 43));
     fillroundrect(uiX - 10, 30, uiX + 190, 90, 15, 15);
     setfillcolor(RGB(240, 200, 120));
     fillroundrect(uiX - 8, 32, uiX + 188, 88, 12, 12);
 
     settextcolor(RGB(139, 90, 43));
-    settextstyle(28, 0, _T("¿¬Ìå"));
+    settextstyle(28, 0, _T("æ¥·ä½“"));
     TCHAR info[200];
-    _stprintf(info, _T("Î§ÆåÓÎÏ·ÏµÍ³"));
+    _stprintf(info, _T("å›´æ£‹æ¸¸æˆç³»ç»Ÿ"));
     outtextxy(uiX + 5, 45, info);
 
-    // ÖÆ×÷ÕßĞÅÏ¢¿ò
-    settextstyle(14, 0, _T("ËÎÌå"));
+    // åˆ¶ä½œè€…ä¿¡æ¯æ¡†
+    settextstyle(14, 0, _T("å®‹ä½“"));
     settextcolor(RGB(80, 50, 20));
-    _stprintf(info, _T("ÖÆ×÷ÕßĞÅÏ¢:"));
+    _stprintf(info, _T("åˆ¶ä½œè€…ä¿¡æ¯:"));
     outtextxy(uiX, 105, info);
-    settextstyle(12, 0, _T("ËÎÌå"));
-    _stprintf(info, _T("251880102 ºöÕÜ"));
+    settextstyle(12, 0, _T("å®‹ä½“"));
+    _stprintf(info, _T("251880102 å¿½å“²"));
     outtextxy(uiX + 5, 125, info);
-    _stprintf(info, _T("251880599 ÌÆñ´Ìí"));
+    _stprintf(info, _T("251880599 å”ç¿Šæ·»"));
     outtextxy(uiX + 5, 143, info);
-    _stprintf(info, _T("2518801370 Àî×¿ä­"));
+    _stprintf(info, _T("2518801370 æå“æ´µ"));
     outtextxy(uiX + 5, 161, info);
-    _stprintf(info, _T("251880107 ÂíÒ«×Ú"));
+    // Fun progress strip: makes every match feel like a small quest.
+    int progress = gameState.moveCount;
+    if (progress > MAX_HISTORY) progress = MAX_HISTORY;
+    setlinecolor(RGB(180, 120, 62));
+    setfillcolor(RGB(255, 243, 208));
+    fillroundrect(uiX + 10, 326, uiX + 170, 334, 4, 4);
+    setfillcolor(gameState.currentPlayer == BLACK ? RGB(55, 55, 60) : RGB(245, 245, 245));
+    fillroundrect(uiX + 10, 326, uiX + 10 + progress * 160 / MAX_HISTORY, 334, 4, 4);
+    setlinecolor(RGB(120, 80, 42));
+    rectangle(uiX + 10, 326, uiX + 170, 334);
+
+    _stprintf(info, _T("251880107 é©¬è€€å®—"));
     outtextxy(uiX + 5, 179, info);
 
-    // ÓÎÏ·ĞÅÏ¢¿ò
-    settextstyle(16, 0, _T("ËÎÌå"));
+    // æ¸¸æˆä¿¡æ¯æ¡†
+    settextstyle(16, 0, _T("å®‹ä½“"));
     settextcolor(RGB(0, 0, 0));
 
     setfillcolor(RGB(200, 160, 90));
@@ -269,21 +280,21 @@ void drawUI() {
     setfillcolor(RGB(250, 220, 170));
     fillroundrect(uiX - 8, 202, uiX + 188, 338, 8, 8);
 
-    _stprintf(info, _T("µ±Ç°Ö´×Ó: %s"),
-        gameState.currentPlayer == BLACK ? _T("¡ñºÚ·½") : _T("¡ğ°×·½"));
+    _stprintf(info, _T("å½“å‰æ‰§å­: %s"),
+        gameState.currentPlayer == BLACK ? _T("â—é»‘æ–¹") : _T("â—‹ç™½æ–¹"));
     outtextxy(uiX + 10, 215, info);
 
-    _stprintf(info, _T("ÊÖÊı: %d"), gameState.moveCount);
+    _stprintf(info, _T("æ‰‹æ•°: %d"), gameState.moveCount);
     outtextxy(uiX + 10, 245, info);
 
-    _stprintf(info, _T("ºÚ·½Ìá×Ó: %d"), gameState.blackCaptures);
+    _stprintf(info, _T("é»‘æ–¹æå­: %d"), gameState.blackCaptures);
     outtextxy(uiX + 10, 275, info);
 
-    _stprintf(info, _T("°×·½Ìá×Ó: %d"), gameState.whiteCaptures);
+    _stprintf(info, _T("ç™½æ–¹æå­: %d"), gameState.whiteCaptures);
     outtextxy(uiX + 10, 305, info);
 
-    // »æÖÆ°´Å¥
-    settextstyle(15, 0, _T("ËÎÌå"));
+    // ç»˜åˆ¶æŒ‰é’®
+    settextstyle(15, 0, _T("å®‹ä½“"));
     setlinecolor(RGB(139, 90, 43));
     setlinestyle(PS_SOLID, 2);
 
@@ -292,12 +303,12 @@ void drawUI() {
     int buttonGap = 8;
 
     const TCHAR* buttons[] = {
-        _T("»ÚÆå [U]"),
-        _T("±£´æÓÎÏ· [S]"),
-        _T("ÔØÈëÓÎÏ· [L]"),
-        _T("AIÌáÊ¾ [H]"),
-        _T("¼ÆËãÄ¿Êı [C]"),
-        _T("·µ»Ø²Ëµ¥ [ESC]")
+        _T("æ‚”æ£‹ [U]"),
+        _T("ä¿å­˜æ¸¸æˆ [S]"),
+        _T("è½½å…¥æ¸¸æˆ [L]"),
+        _T("AIæç¤º [H]"),
+        _T("è®¡ç®—ç›®æ•° [C]"),
+        _T("è¿”å›èœå• [ESC]")
     };
 
     for (int i = 0; i < 6; i++) {

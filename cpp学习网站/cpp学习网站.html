@@ -465,6 +465,104 @@
       color: #4b5565;
     }
 
+    .game-lab-panel {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .game-showcase,
+    .quest-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(24, 103, 192, 0.18);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(234, 243, 255, 0.82));
+      box-shadow: var(--shadow);
+    }
+
+    .game-showcase {
+      min-height: 360px;
+      padding: 26px;
+    }
+
+    .game-showcase::before {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(15, 139, 141, 0.26), transparent 66%);
+    }
+
+    .mini-board {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      width: min(100%, 360px);
+      aspect-ratio: 1;
+      margin-top: 22px;
+      padding: 14px;
+      border: 10px solid #9a652e;
+      border-radius: 14px;
+      background: #d7a253;
+      box-shadow: inset 0 0 0 2px rgba(80, 48, 15, 0.32), 0 20px 40px rgba(90, 55, 18, 0.22);
+    }
+
+    .mini-cell {
+      position: relative;
+      border-right: 1px solid rgba(50, 32, 15, 0.48);
+      border-bottom: 1px solid rgba(50, 32, 15, 0.48);
+    }
+
+    .mini-cell:nth-child(9n) { border-right: 0; }
+    .mini-cell:nth-last-child(-n + 9) { border-bottom: 0; }
+
+    .mini-cell::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 68%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+    }
+
+    .mini-cell.black::after {
+      opacity: 1;
+      background: radial-gradient(circle at 35% 30%, #6c7280, #151821 58%, #050507);
+      box-shadow: 0 5px 9px rgba(0, 0, 0, 0.28);
+    }
+
+    .mini-cell.white::after {
+      opacity: 1;
+      background: radial-gradient(circle at 35% 30%, #fff, #e5e7eb 62%, #c4cad4);
+      box-shadow: 0 5px 9px rgba(0, 0, 0, 0.18);
+    }
+
+    .quest-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .quest-card {
+      padding: 18px;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .quest-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 42px rgba(24, 103, 192, 0.14);
+    }
+
+    .quest-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+
     .toolbar {
       display: grid;
       grid-template-columns: minmax(240px, 1fr) auto auto;
@@ -681,7 +779,8 @@
       .resources,
       .lecture-grid,
       .content-grid,
-      .practice-list {
+      .practice-list,
+      .game-lab-panel {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
@@ -714,6 +813,7 @@
       .lecture-grid,
       .content-grid,
       .practice-list,
+      .game-lab-panel,
       .toolbar {
         grid-template-columns: 1fr;
       }
@@ -754,6 +854,7 @@
         <a href="#roadmap">路线</a>
         <a href="#lectures">讲稿</a>
         <a href="#content">内容</a>
+        <a href="#game-lab">实战</a>
         <a href="#practice">50 题</a>
       </nav>
     </div>
@@ -911,6 +1012,53 @@
         </div>
       </div>
     </section>
+
+    <section id="game-lab">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <h2>围棋实战改造计划</h2>
+            <p>把仓库里的 EasyX 围棋项目包装成可玩、可展示、可继续迭代的课程作品：既练 C++，也练界面、AI 和产品化思维。</p>
+          </div>
+        </div>
+        <div class="game-lab-panel">
+          <article class="game-showcase">
+            <span class="tag orange">Game Lab</span>
+            <h3>从“能运行”升级为“想再下一局”</h3>
+            <p>新增对局进度感、棋盘视觉预览和任务式学习引导，让学习页与围棋项目形成闭环。</p>
+            <div class="mini-board" aria-label="围棋棋盘装饰预览">
+              <span class="mini-cell black"></span><span class="mini-cell"></span><span class="mini-cell white"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell black"></span><span class="mini-cell"></span><span class="mini-cell white"></span><span class="mini-cell"></span>
+              <span class="mini-cell"></span><span class="mini-cell white"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell black"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell black"></span>
+              <span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell black"></span><span class="mini-cell white"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell white"></span><span class="mini-cell"></span><span class="mini-cell"></span>
+              <span class="mini-cell white"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell black"></span><span class="mini-cell white"></span><span class="mini-cell"></span><span class="mini-cell black"></span><span class="mini-cell"></span>
+              <span class="mini-cell"></span><span class="mini-cell black"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell white"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell white"></span>
+              <span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell white"></span><span class="mini-cell black"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell black"></span><span class="mini-cell"></span><span class="mini-cell"></span>
+              <span class="mini-cell black"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell white"></span><span class="mini-cell black"></span><span class="mini-cell"></span><span class="mini-cell white"></span><span class="mini-cell"></span>
+              <span class="mini-cell"></span><span class="mini-cell white"></span><span class="mini-cell"></span><span class="mini-cell black"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell black"></span><span class="mini-cell"></span>
+              <span class="mini-cell"></span><span class="mini-cell"></span><span class="mini-cell black"></span><span class="mini-cell"></span><span class="mini-cell white"></span><span class="mini-cell"></span><span class="mini-cell black"></span><span class="mini-cell"></span><span class="mini-cell white"></span>
+            </div>
+          </article>
+          <div class="quest-list">
+            <article class="quest-card">
+              <span class="tag blue">玩法</span>
+              <h3>AI 提示 + 进度条</h3>
+              <p>围棋窗口侧栏增加对局进度反馈，玩家能直观看到当前棋局推进程度。</p>
+            </article>
+            <article class="quest-card">
+              <span class="tag green">视觉</span>
+              <h3>学习站棋盘化视觉</h3>
+              <p>新增棋盘预览卡片，把学习资料和实战项目连接起来，页面更有主题感。</p>
+            </article>
+            <article class="quest-card">
+              <span class="tag orange">后续</span>
+              <h3>下一步可做成成就系统</h3>
+              <p>例如“首次提子”“完成 50 手”“战胜 AI”等徽章，让课程项目更像小游戏。</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
 
     <section id="practice">
       <div class="page-shell">
